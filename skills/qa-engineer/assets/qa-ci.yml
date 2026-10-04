@@ -1,0 +1,77 @@
+# GitHub Actions workflow — QA suite (Playwright + TypeScript)
+# Copy to .github/workflows/qa.yml in the repo and adapt. Requires repo Secrets:
+# QA_EMAIL, QA_PW (and BASE_URL / DATABASE_URL if not derived). Uses pnpm.
+name: QA
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * *'   # nightly full regression
+  workflow_dispatch:
+
+concurrency:
+  group: qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Smoke (PR gate)
+        if: github.event_name == 'pull_request'
+        run: pnpm exec playwright test --grep @smoke
+        env:
+          BASE_URL: ${{ vars.QA_BASE_URL || 'http://localhost:3000' }}
+          QA_EMAIL: ${{ secrets.QA_EMAIL }}
+          QA_PW: ${{ secrets.QA_PW }}
+
+      - name: Full regression (push / nightly)
+        if: github.event_name != 'pull_request'
+        run: pnpm exec playwright test
+        env:
+          BASE_URL: ${{ vars.QA_BASE_URL || 'http://localhost:3000' }}
+          QA_EMAIL: ${{ secrets.QA_EMAIL }}
+          QA_PW: ${{ secrets.QA_PW }}
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Upload traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 7

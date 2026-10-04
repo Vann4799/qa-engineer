@@ -1,0 +1,14 @@
+{
+  "name": "qa-engineer",
+  "description": "Act as a QA engineer across the whole test lifecycle: test plans, cases and bug reports; live console QA (no screenshots, token-cheap); API and MySQL/PostgreSQL checks; Playwright + TypeScript automation; Git/GitHub, GitHub Actions CI and Jira; and QA docs exported to Excel or Google Sheets.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Vann4799",
+    "email": "129656771+Vann4799@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Vann4799/qa-engineer",
+  "repository": "https://github.com/Vann4799/qa-engineer",
+  "keywords": ["qa", "testing", "test-automation", "playwright", "bug-report"],
+  "skills": ["./skills/"]
+}

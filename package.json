@@ -1,0 +1,41 @@
+{
+  "name": "qa-engineer",
+  "version": "1.0.0",
+  "description": "Installer for the qa-engineer agent skill: plan, write, execute and prove the whole QA lifecycle, then automate it and export the docs.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "qa-engineer": "cli/index.mjs"
+  },
+  "files": [
+    "cli",
+    "skills",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node tests/run.mjs",
+    "validate": "node skills/qa-engineer/scripts/validate_artifacts.mjs",
+    "export": "node skills/qa-engineer/scripts/export_qa.mjs"
+  },
+  "keywords": [
+    "qa",
+    "testing",
+    "test-case",
+    "bug-report",
+    "playwright",
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "opencode",
+    "qoder",
+    "hermes"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vann4799/qa-engineer.git"
+  }
+}

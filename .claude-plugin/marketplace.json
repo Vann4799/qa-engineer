@@ -1,0 +1,23 @@
+{
+  "name": "vann4799-qa",
+  "owner": {
+    "name": "Vann4799",
+    "email": "129656771+Vann4799@users.noreply.github.com"
+  },
+  "metadata": {
+    "description": "A QA engineer skill for coding agents: plan, write, execute, prove with data, file, automate and hand off the whole test lifecycle.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "qa-engineer",
+      "description": "Run the full QA lifecycle — test plans, cases and bug reports, console/API/database execution, Playwright automation, CI and Jira, plus spreadsheet export.",
+      "author": {
+        "name": "Vann4799",
+        "email": "129656771+Vann4799@users.noreply.github.com"
+      },
+      "category": "testing",
+      "source": "./"
+    }
+  ]
+}
