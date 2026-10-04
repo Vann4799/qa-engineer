@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" role="img" aria-label="Animated terminal playback of one qa-engineer QA pass">
+  <style>
+    .bg{fill:#0d1117}
+    .bar{fill:#161b22}
+    .t{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px;fill:#e6edf3}
+    .dim{fill:#8b949e}
+    .grn{fill:#7ee787}
+    .usr{fill:#79c0ff}
+    .bold{font-weight:700}
+    .ln{opacity:1;animation-duration:22s;animation-iteration-count:infinite;animation-timing-function:steps(1,end)}
+    .k1{animation-name:k1}.k2{animation-name:k2}.k3{animation-name:k3}.k4{animation-name:k4}
+    .k5{animation-name:k5}.k6{animation-name:k6}.k7{animation-name:k7}.k8{animation-name:k8}
+    .k9{animation-name:k9}.k10{animation-name:k10}.k11{animation-name:k11}.k12{animation-name:k12}
+    @keyframes k1{0%,2%{opacity:0}3%,100%{opacity:1}}
+    @keyframes k2{0%,7%{opacity:0}8%,100%{opacity:1}}
+    @keyframes k3{0%,8.5%{opacity:0}9.5%,100%{opacity:1}}
+    @keyframes k4{0%,10%{opacity:0}11%,100%{opacity:1}}
+    @keyframes k5{0%,16%{opacity:0}17%,100%{opacity:1}}
+    @keyframes k6{0%,23%{opacity:0}24%,100%{opacity:1}}
+    @keyframes k7{0%,30%{opacity:0}31%,100%{opacity:1}}
+    @keyframes k8{0%,37%{opacity:0}38%,100%{opacity:1}}
+    @keyframes k9{0%,44%{opacity:0}45%,100%{opacity:1}}
+    @keyframes k10{0%,53%{opacity:0}54%,100%{opacity:1}}
+    @keyframes k11{0%,55%{opacity:0}56%,100%{opacity:1}}
+    @keyframes k12{0%,64%{opacity:0}65%,100%{opacity:1}}
+    .cur{animation:blink 1s steps(1,end) infinite}
+    @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+  </style>
+
+  <rect class="bg" x="0" y="0" width="960" height="420" rx="12"/>
+  <rect class="bar" x="0" y="0" width="960" height="40" rx="12"/>
+  <rect class="bar" x="0" y="24" width="960" height="16"/>
+  <circle cx="24" cy="20" r="6" fill="#ff5f56"/>
+  <circle cx="44" cy="20" r="6" fill="#ffbd2e"/>
+  <circle cx="64" cy="20" r="6" fill="#27c93f"/>
+  <text class="t dim" x="480" y="25" text-anchor="middle">qa-engineer · one pass · no screenshots</text>
+
+  <text class="t ln k1" x="24" y="76"><tspan class="grn">$</tspan> npx github:Vann4799/qa-engineer</text>
+  <text class="t dim ln k2" x="24" y="104">ok  Claude Code       .claude/skills</text>
+  <text class="t dim ln k3" x="24" y="130">ok  Codex / OpenCode  .codex/skills</text>
+  <text class="t dim ln k4" x="24" y="156">ok  Qoder CLI         .agents/skills</text>
+
+  <text class="t usr ln k5" x="24" y="196">&gt; QA lewat console flow login, tanpa screenshot</text>
+
+  <text class="t ln k6" x="24" y="232"><tspan class="grn">✓</tspan> session   ok  role=admin via POST /api/auth/login</text>
+  <text class="t ln k7" x="24" y="258"><tspan class="grn">✓</tspan> console   0 errors · network 14 req, 0 failed</text>
+  <text class="t ln k8" x="24" y="284"><tspan class="grn">✓</tspan> dom       6/6 assertions ok, no overflow</text>
+  <text class="t ln k9" x="24" y="310"><tspan class="grn">✓</tspan> flows     login &gt; list &gt; detail ok</text>
+
+  <text class="t dim ln k10" x="24" y="346">wrote qa-test-cases.csv (3 rows)</text>
+  <text class="t dim ln k11" x="24" y="372">wrote qa-bugs.csv (1 row)</text>
+  <text class="t grn bold ln k12" x="24" y="402">verdict: SHIP (0 blockers)</text>
+
+  <rect class="cur grn" x="250" y="390" width="9" height="16"/>
+</svg>

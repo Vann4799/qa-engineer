@@ -11,11 +11,21 @@ hand through the browser console, or automated with Playwright), proves every
 result with data, files what breaks, and hands it all back through Git, CI and
 Jira. Works with Claude Code, Codex, OpenCode, Hermes Agent, and Qoder CLI.
 
-The counterweight to "looks fine to me": every claim carries evidence — an HTTP
-status, a JSON return, a SQL row count, an exit code — and every run stays inside
-the token budget. Live console QA takes no screenshots by default and drives the
-page through `evaluate_script`, so a full pass costs a handful of small JSON
-returns instead of a wall of pixels.
+The counterweight to "looks fine to me": every claim carries evidence, an HTTP
+status, a JSON return, a SQL row count, an exit code. Live console QA takes no
+screenshots by default and drives the page through `evaluate_script`, so a full
+pass costs a handful of small JSON returns instead of a wall of pixels.
+
+## Demo
+
+![qa-engineer demo: one console QA pass on a login flow](demo/terminal.svg)
+
+A scripted playback of one real pass: install the skill, then a console QA run on
+a login flow that verifies the session, asserts the DOM, and ends in a SHIP
+verdict plus a CSV export. It is an animated SVG, so it plays in the browser and
+on GitHub with no dependencies. Want a true video capture instead? Run the
+Playwright recipe in `references/automation-playwright.md` with
+`use: { video: 'on' }` against your own app.
 
 ## What it covers
 
@@ -23,8 +33,8 @@ returns instead of a wall of pixels.
 |-------|--------------------|-----------|
 | Plan | test plan, scope, risk-based priority, entry/exit criteria | `assets/test-plan-template.md` |
 | Write | test cases (happy, negative, boundary, permission) + bug reports | `assets/test-case-template.md`, `assets/bug-report-template.md` |
-| Execute — manual | live UI QA from the browser console, no screenshots | `references/console-qa.md`, `references/console-snippets.md` |
-| Execute — API | status codes, schema, auth, validation, idempotency | `references/api-testing.md` |
+| Execute, manual | live UI QA from the browser console, no screenshots | `references/console-qa.md`, `references/console-snippets.md` |
+| Execute, API | status codes, schema, auth, validation, idempotency | `references/api-testing.md` |
 | Verify data | confirm writes/cascade/cleanup in MySQL or PostgreSQL | `references/database-testing.md` |
 | Report | reproducible bug reports with severity vs priority | `references/testing-fundamentals.md` |
 | Automate | Playwright + TypeScript suite, POM, CI-safe specs | `scripts/scaffold_playwright.mjs`, `assets/playwright-spec.template.ts` |
@@ -32,22 +42,22 @@ returns instead of a wall of pixels.
 | Ticket | file and triage in Jira | `references/tools-jira-devtools.md` |
 | Hand off | export the QA docs to Excel or Google Sheets | `scripts/export_qa.mjs`, `references/spreadsheet-export.md` |
 
-Most real jobs combine phases: write the case → execute it in the console →
-confirm in the database → file the bug → automate the regression → CI.
+Most real jobs combine phases: write the case, execute it in the console, confirm
+in the database, file the bug, automate the regression, then CI.
 
 ## Runs on any agent
 
 The skill maps capabilities to whatever tool the host exposes, so it degrades
 gracefully instead of breaking:
 
-- File + shell (read, write, `node`, `git`, `curl`) covers ~90% of the lifecycle
-  on Claude Code, Codex, OpenCode, Hermes and Qoder alike.
-- Only **Phase 3 (live console QA)** needs a browser tool
-  (`evaluate_script`-style). No browser? The agent says so and falls back to API,
-  database and automation checks rather than inventing a result.
+- File + shell (read, write, `node`, `git`, `curl`) covers about 90% of the
+  lifecycle on Claude Code, Codex, OpenCode, Hermes and Qoder alike.
+- Only Phase 3 (live console QA) needs a browser tool of the `evaluate_script`
+  kind. No browser? The agent says so and falls back to API, database and
+  automation checks rather than inventing a result.
 
-All bundled scripts are dependency-free Node ≥ 18. On Windows use `pnpm`, not
-`npm`.
+All bundled scripts are dependency-free Node 18 or newer. On Windows use `pnpm`,
+not `npm`.
 
 ## Install
 
@@ -58,7 +68,7 @@ npx github:Vann4799/qa-engineer --list   # see what it would touch
 npx github:Vann4799/qa-engineer          # install into detected agents
 ```
 
-It copies `skills/qa-engineer/` into each agent's skills folder it finds
+It copies `skills/qa-engineer/` into each agent skills folder it finds
 (`~/.claude/skills`, `~/.codex/skills`, `~/.agents/skills`), refuses to overwrite
 without `--force`, and prints the `hermes skills add` command instead of guessing
 at Hermes. `--host claude,qoder` or `--dir <path>` narrow it down. No network, no
@@ -109,6 +119,7 @@ before calling it done.
 ```
 .
 ├── cli/index.mjs                      npx installer: detect hosts, copy the skill
+├── demo/terminal.svg                  animated playback of one QA pass
 ├── tests/run.mjs                      dependency-free suite: validator, exporter, scaffolder, shape, installer
 ├── tests/fixtures/{good,bad}/         passing artifacts and one that must fail
 ├── .claude-plugin/                    plugin.json + marketplace.json
@@ -125,7 +136,7 @@ before calling it done.
     │   ├── git-github.md              branch/commit/PR workflow for test code
     │   ├── cicd-github-actions.md     GitHub Actions test workflow
     │   ├── tools-jira-devtools.md     Jira ticket flow + DevTools usage
-    │   └── spreadsheet-export.md      QA docs → Excel / Google Sheets (CSV, Sheets API, .xlsx)
+    │   └── spreadsheet-export.md      QA docs to Excel / Google Sheets (CSV, Sheets API, .xlsx)
     ├── assets/
     │   ├── test-plan-template.md      fill-in test plan
     │   ├── test-case-template.md      fill-in test case
@@ -134,7 +145,7 @@ before calling it done.
     │   └── qa-ci.yml                  GitHub Actions workflow template
     └── scripts/
         ├── validate_artifacts.mjs     deterministic completeness check, exit 1 on any FAIL
-        ├── export_qa.mjs              QA markdown → CSV tables for Excel / Google Sheets
+        ├── export_qa.mjs              QA markdown to CSV tables for Excel / Google Sheets
         └── scaffold_playwright.mjs    generate a Playwright + TypeScript project skeleton
 ```
 
@@ -143,7 +154,7 @@ never sits in the context window at once.
 
 ## Scripts
 
-All three are dependency-free Node (≥ 18) and run on any machine.
+All three are dependency-free Node (18 or newer) and run on any machine.
 
 ```bash
 node scripts/validate_artifacts.mjs test-case.md bug-report.md
@@ -152,7 +163,7 @@ node scripts/scaffold_playwright.mjs ./e2e
 ```
 
 - **`validate_artifacts.mjs`** detects the artifact type per file (test case, bug
-  report or test plan — override with `--type`), then checks required fields,
+  report or test plan, override with `--type`), then checks required fields,
   numbered steps, severity/priority vocabularies, leftover `[placeholders]` and
   `TODO:` notes, and thin evidence. It exits non-zero on any `FAIL`, so it drops
   into CI or a pre-commit hook.
@@ -160,9 +171,9 @@ node scripts/scaffold_playwright.mjs ./e2e
   per artifact kind (test cases, bugs, traceability, summary counts) that opens
   in Excel and imports into Google Sheets. For a live Sheet or a multi-tab
   `.xlsx`, see `references/spreadsheet-export.md`.
-- **`scaffold_playwright.mjs`** writes a Playwright + TypeScript skeleton —
-  config with `webServer` auto-start, a Page Object, a tagged sample spec — and
-  refuses to clobber an existing project without `--force`.
+- **`scaffold_playwright.mjs`** writes a Playwright + TypeScript skeleton with
+  `webServer` auto-start, a Page Object and a tagged sample spec, and refuses to
+  clobber an existing project without `--force`.
 
 ## Tests and CI
 
@@ -173,20 +184,20 @@ node tests/run.mjs      # no dependencies, exit 0 = green
 The suite is why the README can say "deterministic" out loud. It asserts the good
 test case, bug report and test plan each pass with zero warnings and are detected
 as the right type; that the broken bug report exits 1 and names every fault
-(placeholder, TODO, bad severity/priority, empty environment, missing Actual and
-Evidence); that the exporter writes all four CSVs with a BOM and the parsed values
-intact; that the scaffolder writes the project and refuses to clobber; that the
-skill keeps its own conventions (frontmatter, description length, under 500 lines,
-no README inside the skill folder, every reference/asset/script linked from
-`SKILL.md`); and that the installer copies, refuses to overwrite, and leaves a
-working validator behind. CI runs it on Node 18, 20 and 22.
+(placeholder, TODO, bad severity/priority, missing Actual and Evidence); that the
+exporter writes all four CSVs with a BOM and the parsed values intact; that the
+scaffolder writes the project and refuses to clobber; that the skill keeps its own
+conventions (frontmatter, description length, under 500 lines, no README inside
+the skill folder, every reference/asset/script linked from `SKILL.md`); and that
+the installer copies, refuses to overwrite, and leaves a working validator behind.
+CI runs it on Node 18, 20 and 22.
 
 ## Ground rules the skill enforces
 
-- **Only apps you own** — local, staging, preview. Never third-party sites.
-- **Reads anywhere you own; writes on staging/local only**, never production.
-- **Credentials** are asked once per session or read from an env var you name —
-  never scraped from repo files, never written into a report or a saved snippet.
+- **Only apps you own:** local, staging, preview. Never third-party sites.
+- **Reads anywhere you own; writes on staging/local only,** never production.
+- **Credentials** are asked once per session or read from an env var you name.
+  Never scraped from repo files, never written into a report or a saved snippet.
 - **Stop and say so** when a phase cannot run (app down, login rejected, no DB or
   browser access). A QA report built on a broken premise is worse than none.
 
@@ -194,13 +205,14 @@ working validator behind. CI runs it on Node 18, 20 and 22.
 
 Edit the files rather than the workflow:
 
-- `references/*.md` — the playbooks and query patterns your team actually uses
-- `assets/*-template.md` — the artifact shapes; keep them in sync with the
+- `references/*.md`: the playbooks and query patterns your team actually uses
+- `assets/*-template.md`: the artifact shapes; keep them in sync with the
   validator's required fields
-- `scripts/validate_artifacts.mjs` — the `PRIORITIES`, `SEVERITIES` and
+- `scripts/validate_artifacts.mjs`: the `PRIORITIES`, `SEVERITIES` and
   `CASE_TYPES` vocabularies, or the required sections per artifact type
-- `assets/qa-ci.yml` — smoke-on-PR vs regression-on-push, browser cache, artifacts
-- `cli/index.mjs` → `HOSTS` — another agent's skills directory
+- `assets/qa-ci.yml`: smoke-on-PR vs regression-on-push, browser cache, artifacts
+- `cli/index.mjs` (the `HOSTS` table): another agent's skills directory
+- `demo/terminal.svg`: the playback lines and timings
 
 ## License
 
